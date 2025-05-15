@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 const crypto = require('crypto');
 
-const { generateToken, verifyToken } = require('../services/auth');
+const { generateToken } = require('../services/auth');
 
 const userSchema = new Schema({
   name: {
@@ -56,7 +56,7 @@ userSchema.static('authenticate_generateToken', async function (email, password)
       .update(password)
       .digest('hex');
     
-    if (hashedPassword !== user.password) {
+    if (hashedPassword !== userProvidedPassword) {
       throw new Error('Invalid password');
     }
       const token = generateToken(user);

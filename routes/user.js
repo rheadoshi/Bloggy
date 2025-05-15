@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
-const { verifyToken } = require('../services/auth');
-
 
 router.get('/signin', (req, res) => {
   res.render('signin');
@@ -12,6 +10,7 @@ router.post('/signin', async (req, res) => {
   try {
       const { email, password } = req.body;
       const token = await User.authenticate_generateToken(email, password);
+      
       if (token) {
           res.cookie("token", token).redirect('/'); // Redirect to homepage
       } else {
